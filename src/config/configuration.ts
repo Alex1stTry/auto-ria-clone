@@ -7,4 +7,25 @@ export default (): Config => ({
     host: process.env.APP_HOST,
     port: Number(process.env.APP_PORT),
   },
+  pg: {
+    host: process.env.POSTGRES_HOST,
+    port: Number(process.env.POSTGRES_PORT),
+    dbName: process.env.POSTGRES_DB,
+    password: process.env.POSTGRES_PASSWORD,
+    user: process.env.POSTGRES_USER,
+  },
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: Number(process.env.REDIS_PORT),
+    password: process.env.REDIS_PASSWORD,
+  },
+  jwt: {
+    accessSecret: process.env.ACCESS_SECRET,
+    accessExpireIn: Number(process.env.ACCESS_EXPIRE_IN),
+    refreshSecret: process.env.REFRESH_SECRET,
+    refreshExpireIn: Number(process.env.REFRESH_EXPIRE_IN),
+  },
+  bcrypt: {
+    countOfSalt: Number(process.env.CAUNT_OF_SALT),
+  },
 });
