@@ -1,13 +1,11 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
+import { BaseModel } from './base-model/base-model';
 import { CarsEntity } from './cars.entity';
 import { TableNameEnum } from './enum/table-name.enum';
 
 @Entity(TableNameEnum.CITIES)
-export class CitiesEntity {
-  @PrimaryGeneratedColumn('uuid')
-  city_id: string;
-
+export class CitiesEntity extends BaseModel {
   @Column('text')
   city: string;
 

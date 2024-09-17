@@ -4,5 +4,4 @@ import { TokensResDto } from './tokens.res.dto';
 export class AuthResDto {
   user: BaseAuthResDto;
   tokens: TokensResDto;
-  // cars?: CarResDto;
 }

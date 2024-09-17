@@ -28,4 +28,9 @@ export default (): Config => ({
   bcrypt: {
     countOfSalt: Number(process.env.CAUNT_OF_SALT),
   },
+  admin: {
+    name: process.env.ADMIN_NAME,
+    password: process.env.ADMIN_PASSWORD,
+    email: process.env.ADMIN_EMAIL,
+  },
 });

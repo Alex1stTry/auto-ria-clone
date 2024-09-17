@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 
 import { BaseModel } from './base-model/base-model';
 import { CarsEntity } from './cars.entity';
@@ -25,10 +25,6 @@ export class SellersEntity extends BaseModel {
   @OneToOne(() => RefreshTokensEntity, (entity) => entity.salesman)
   tokens?: RefreshTokensEntity;
 
-  @Column('uuid', { nullable: true })
-  car_id: string;
-
   @OneToMany(() => CarsEntity, (entity) => entity.salesman)
-  @JoinColumn({ name: 'car_id' })
   cars?: CarsEntity[] | CarsEntity;
 }

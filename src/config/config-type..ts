@@ -4,6 +4,7 @@ export type Config = {
   redis: RedisConfig;
   jwt: JwtConfig;
   bcrypt: BcryptConfig;
+  admin: AdminConfig;
 };
 
 export type AppConfig = {
@@ -34,4 +35,10 @@ export type JwtConfig = {
 
 export type BcryptConfig = {
   countOfSalt: number;
+};
+
+export type AdminConfig = {
+  name: string;
+  password: string;
+  email: string;
 };

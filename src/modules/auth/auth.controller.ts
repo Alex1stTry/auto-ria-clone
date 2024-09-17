@@ -9,6 +9,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -32,6 +33,7 @@ export class AuthController {
 
   @Post('register')
   @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiConflictResponse({ description: 'Conflict' })
   @HttpCode(HttpStatus.CREATED)
   @SkipAuth()
   public async register(@Body() dto: RegisterReqDto): Promise<AuthResDto> {

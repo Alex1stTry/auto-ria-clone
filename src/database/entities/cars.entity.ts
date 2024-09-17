@@ -22,16 +22,12 @@ export class CarsEntity extends BaseModel {
   @Column('text')
   body: string;
 
-  @Column('uuid')
-  city_id: string;
-
   @ManyToOne(() => CitiesEntity, (entity) => entity.cars)
   @JoinColumn({ name: 'city_id' })
   city?: CitiesEntity;
 
   @Column('uuid')
   salesman_id: string;
-
   @ManyToOne(() => SellersEntity, (entity) => entity.cars)
   @JoinColumn({ name: 'salesman_id' })
   salesman?: SellersEntity;

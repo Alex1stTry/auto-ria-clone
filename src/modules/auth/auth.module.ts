@@ -22,5 +22,6 @@ import { TokenService } from './services/token.service';
     TokenService,
     AccessSaveService,
   ],
+  exports: [TokenService, AccessSaveService],
 })
 export class AuthModule {}
