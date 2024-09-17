@@ -19,7 +19,7 @@ export class SalesmanService {
   public async getMe(userData: IUserData): Promise<SellersEntity> {
     return await this.sellersRepo.findOne({
       where: { id: userData.userId },
-      relations: ['cars'],
+      relations: ['cars', 'cars.city'],
     });
   }
 

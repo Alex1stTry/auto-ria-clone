@@ -34,10 +34,12 @@ export class CarsService {
   }
 
   private async findOrCreateCity(cityName: string): Promise<CitiesEntity> {
-    const city = await this.citiesRepo.findOneBy({ city: cityName });
+    let city = await this.citiesRepo.findOneBy({ city: cityName });
 
     if (!city) {
-      await this.citiesRepo.save(this.citiesRepo.create({ city: cityName }));
+      city = await this.citiesRepo.save(
+        this.citiesRepo.create({ city: cityName }),
+      );
     }
 
     return city;
