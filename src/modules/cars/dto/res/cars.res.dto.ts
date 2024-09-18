@@ -13,6 +13,8 @@ export class CarsResDto {
 
   public readonly body: string;
 
+  public readonly photos?: string[];
+
   public readonly city?: CitiesEntity;
 
   public readonly countOfViews: number;

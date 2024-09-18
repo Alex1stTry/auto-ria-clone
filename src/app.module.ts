@@ -10,6 +10,7 @@ import { PostgresModule } from './modules/postgres/postgres.module';
 import { RedisModule } from './modules/redis/redis.module';
 import { RepositoryModule } from './modules/repository/repository.service';
 import { SalesmanModule } from './modules/salesman/salesman.module';
+import { FileUploadModule } from './modules/upload-files/file-upload.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { SalesmanModule } from './modules/salesman/salesman.module';
     SalesmanModule,
     CarModule,
     MailerModule,
+    FileUploadModule,
   ],
   controllers: [],
   providers: [],

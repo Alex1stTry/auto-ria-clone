@@ -37,4 +37,12 @@ export default (): Config => ({
     smtpEmail: process.env.SMTP_EMAIL,
     smtpPass: process.env.SMTP_PASSWORD,
   },
+  aws: {
+    access: process.env.AWS_S3_ACCESS_KEY,
+    secretKey: process.env.AWS_S3_SECRET_KEY,
+    bucketName: process.env.AWS_S3_BUCKET_NAME,
+    endpoint: process.env.AWS_S3_ENDPOINT,
+    bucketUrl: process.env.AWS_S3_BUCKET_URL,
+    region: process.env.AWS_S3_REGION,
+  },
 });

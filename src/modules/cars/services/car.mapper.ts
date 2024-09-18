@@ -1,3 +1,5 @@
+import * as process from 'node:process';
+
 import { CarsEntity } from '../../../database/entities/cars.entity';
 import { CarsResDto } from '../dto/res/cars.res.dto';
 
@@ -9,6 +11,11 @@ export class CarMapper {
       return cars.map((car) => ({
         brands: car.brands,
         models: car.models,
+        photos: car.photos?.length
+          ? car.photos.map(
+              (photo) => `${process.env.AWS_S3_BUCKET_URL}/${photo}`,
+            )
+          : [],
         price: car.price,
         year: car.year,
         body: car.body,
@@ -19,6 +26,11 @@ export class CarMapper {
         brands: cars.brands,
         models: cars.models,
         price: cars.price,
+        photos: cars.photos?.length
+          ? cars.photos.map(
+              (photo) => `${process.env.AWS_S3_BUCKET_URL}/${photo}`,
+            )
+          : [],
         year: cars.year,
         body: cars.body,
         countOfViews: cars.countOfViews,

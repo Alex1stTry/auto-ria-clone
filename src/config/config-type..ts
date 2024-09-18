@@ -6,6 +6,7 @@ export type Config = {
   bcrypt: BcryptConfig;
   admin: AdminConfig;
   mailer: MailerConfig;
+  aws: AwsConfig;
 };
 
 export type AppConfig = {
@@ -47,4 +48,12 @@ export type AdminConfig = {
 export type MailerConfig = {
   smtpEmail: string;
   smtpPass: string;
+};
+export type AwsConfig = {
+  access: string;
+  secretKey: string;
+  bucketName: string;
+  endpoint: string;
+  bucketUrl: string;
+  region: string;
 };

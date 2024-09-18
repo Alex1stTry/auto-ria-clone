@@ -26,6 +26,9 @@ export class CarsEntity extends BaseModel {
   @Column('text')
   body: string;
 
+  @Column('text', { array: true, nullable: true })
+  photos?: string[];
+
   @ManyToOne(() => CitiesEntity, (entity) => entity.cars)
   @JoinColumn({ name: 'city_id' })
   city?: CitiesEntity;

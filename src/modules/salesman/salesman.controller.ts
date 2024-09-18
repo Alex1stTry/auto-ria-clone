@@ -1,12 +1,26 @@
-import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Patch,
+  Post,
+  UploadedFiles,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import {
   ApiBearerAuth,
+  ApiConsumes,
   ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
+import { ApiFile } from '../../common/decorators/api-file.decorator';
 import { CurrentUser } from '../auth/decoraors/current-user.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
 import { CarReqDto } from '../cars/dto/req/car.req.dto';
@@ -49,6 +63,17 @@ export class SalesmanController {
     @Body() dto: CarReqDto,
   ): Promise<CarsResDto> {
     return await this.salesmanService.addCar(userData, dto);
+  }
+  @Post('add-photos')
+  @UseInterceptors(FilesInterceptor('photos'))
+  @ApiConsumes('multipart/form-data')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiFile('photos', true, false)
+  public async addPhotos(
+    @UploadedFiles() photos: Express.Multer.File[],
+    @CurrentUser() userData: IUserData,
+  ): Promise<void> {
+    await this.salesmanService.addPhotos(userData, photos);
   }
 
   @ApiForbiddenResponse()
