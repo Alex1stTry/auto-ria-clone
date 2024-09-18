@@ -7,8 +7,8 @@ export class CarMapper {
   ): CarsResDto[] | CarsResDto {
     if (Array.isArray(cars)) {
       return cars.map((car) => ({
-        brand: car.brand,
-        model: car.model,
+        brands: car.brands,
+        models: car.models,
         price: car.price,
         year: car.year,
         body: car.body,
@@ -16,8 +16,8 @@ export class CarMapper {
       }));
     } else {
       return {
-        brand: cars.brand,
-        model: cars.model,
+        brands: cars.brands,
+        models: cars.models,
         price: cars.price,
         year: cars.year,
         body: cars.body,

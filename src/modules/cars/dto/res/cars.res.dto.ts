@@ -1,9 +1,11 @@
+import { BrandEntity } from '../../../../database/entities/brand.entity';
 import { CitiesEntity } from '../../../../database/entities/cities.entity';
+import { ModelEntity } from '../../../../database/entities/model.entity';
 
 export class CarsResDto {
-  public readonly brand: string;
+  public readonly brands?: BrandEntity;
 
-  public readonly model: string;
+  public readonly models?: ModelEntity;
 
   public readonly price: number;
 

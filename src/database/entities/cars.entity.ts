@@ -1,17 +1,21 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { BaseModel } from './base-model/base-model';
+import { BrandEntity } from './brand.entity';
 import { CitiesEntity } from './cities.entity';
 import { TableNameEnum } from './enum/table-name.enum';
+import { ModelEntity } from './model.entity';
 import { SellersEntity } from './sellers.entity';
 
 @Entity(TableNameEnum.CARS)
 export class CarsEntity extends BaseModel {
-  @Column('text')
-  brand: string;
+  @ManyToOne(() => BrandEntity, (entity) => entity.cars)
+  @JoinColumn({ name: 'brand_id' })
+  brands?: BrandEntity;
 
-  @Column('text')
-  model: string;
+  @ManyToOne(() => ModelEntity, (entity) => entity.cars)
+  @JoinColumn({ name: 'model_id ' })
+  models?: ModelEntity;
 
   @Column('int')
   price: number;

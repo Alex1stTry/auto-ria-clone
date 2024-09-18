@@ -6,6 +6,7 @@ import { AccountTypeEnum } from '../../auth/enums/account-type.enum';
 import { IUserData } from '../../auth/interfaces/user-data.interface';
 import { CarReqDto } from '../../cars/dto/req/car.req.dto';
 import { CarsService } from '../../cars/services/cars.service';
+import { CarsRepository } from '../../repository/services/cars.repository';
 import { SellersRepository } from '../../repository/services/sellers.repository';
 import { GooglePayService } from './google-pay.service';
 
@@ -15,6 +16,7 @@ export class SalesmanService {
     private readonly sellersRepo: SellersRepository,
     private readonly googlePay: GooglePayService,
     private readonly carsService: CarsService,
+    private readonly carsRepo: CarsRepository,
   ) {}
   public async getMe(userData: IUserData): Promise<SellersEntity> {
     return await this.sellersRepo.findOne({
@@ -42,5 +44,9 @@ export class SalesmanService {
     dto: CarReqDto,
   ): Promise<CarsEntity> {
     return await this.carsService.addCar(userData, dto);
+  }
+
+  public async getStatistics(userData: IUserData): Promise<CarsEntity> {
+    return await this.carsRepo.getStatistic(userData.userId);
   }
 }

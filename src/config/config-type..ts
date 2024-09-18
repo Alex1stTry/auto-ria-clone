@@ -5,6 +5,7 @@ export type Config = {
   jwt: JwtConfig;
   bcrypt: BcryptConfig;
   admin: AdminConfig;
+  mailer: MailerConfig;
 };
 
 export type AppConfig = {
@@ -41,4 +42,9 @@ export type AdminConfig = {
   name: string;
   password: string;
   email: string;
+};
+
+export type MailerConfig = {
+  smtpEmail: string;
+  smtpPass: string;
 };

@@ -5,10 +5,12 @@ import { TransformHelper } from '../../../../common/helper/transform-helper';
 
 export class CarReqDto {
   @Transform(TransformHelper.trim)
+  @Transform(TransformHelper.toUpperCase)
   @IsString()
   public readonly brand: string;
 
   @Transform(TransformHelper.trim)
+  @Transform(TransformHelper.toUpperCase)
   @IsString()
   public readonly model: string;
 

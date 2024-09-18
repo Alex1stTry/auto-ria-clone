@@ -33,4 +33,8 @@ export default (): Config => ({
     password: process.env.ADMIN_PASSWORD,
     email: process.env.ADMIN_EMAIL,
   },
+  mailer: {
+    smtpEmail: process.env.SMTP_EMAIL,
+    smtpPass: process.env.SMTP_PASSWORD,
+  },
 });

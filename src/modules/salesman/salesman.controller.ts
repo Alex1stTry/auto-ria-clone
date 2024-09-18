@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -11,6 +12,8 @@ import { IUserData } from '../auth/interfaces/user-data.interface';
 import { CarReqDto } from '../cars/dto/req/car.req.dto';
 import { CarsResDto } from '../cars/dto/res/cars.res.dto';
 import { SalesmanResDto } from './dto/res/salesman.res.dto';
+import { BasicAccountGuard } from './guard/basic-account.guard';
+import { PremiumAccountGuard } from './guard/premium-account.guard';
 import { SalesmanMapper } from './services/salesman.mapper';
 import { SalesmanService } from './services/salesman.service';
 
@@ -31,7 +34,6 @@ export class SalesmanController {
   }
 
   @Patch('buy-premium')
-  @ApiUnauthorizedResponse()
   public async buyPremium(
     @CurrentUser() userData: IUserData,
   ): Promise<SalesmanResDto> {
@@ -39,11 +41,20 @@ export class SalesmanController {
     return SalesmanMapper.toResponseDto(res);
   }
 
+  @ApiForbiddenResponse()
+  @UseGuards(BasicAccountGuard)
   @Post('add-car')
   public async addCar(
     @CurrentUser() userData: IUserData,
     @Body() dto: CarReqDto,
   ): Promise<CarsResDto> {
     return await this.salesmanService.addCar(userData, dto);
+  }
+
+  @ApiForbiddenResponse()
+  @UseGuards(PremiumAccountGuard)
+  @Get('get-statistics')
+  public async getStatistics(@CurrentUser() userData: IUserData): Promise<any> {
+    return await this.salesmanService.getStatistics(userData);
   }
 }

@@ -4,7 +4,6 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 
 import { CustomersEntity } from '../../../database/entities/customers.entity';
 import { SellersEntity } from '../../../database/entities/sellers.entity';
@@ -19,7 +18,6 @@ import { TokenService } from '../services/token.service';
 @Injectable()
 export class JwtRefreshGuard implements CanActivate {
   constructor(
-    private readonly reflector: Reflector,
     private readonly tokenService: TokenService,
     private readonly refreshRepo: RefreshTokensRepository,
     private readonly sellersRepo: SellersRepository,
