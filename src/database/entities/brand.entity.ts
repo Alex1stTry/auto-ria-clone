@@ -10,9 +10,9 @@ export class BrandEntity extends BaseModel {
   @Column('text')
   name: string;
 
-  @OneToMany(() => CarsEntity, (entity) => entity.brands)
+  @OneToMany(() => CarsEntity, (entity) => entity.brand)
   cars?: CarsEntity[];
 
   @OneToMany(() => ModelEntity, (entity) => entity.brand)
-  models?: ModelEntity;
+  models?: ModelEntity[];
 }

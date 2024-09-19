@@ -14,6 +14,6 @@ export class ModelEntity extends BaseModel {
   @JoinColumn({ name: 'brand_id' })
   brand?: BrandEntity;
 
-  @OneToMany(() => CarsEntity, (entity) => entity.models)
+  @OneToMany(() => CarsEntity, (entity) => entity.model)
   cars?: CarsEntity[];
 }

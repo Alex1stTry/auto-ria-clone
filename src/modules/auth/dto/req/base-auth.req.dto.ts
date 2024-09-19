@@ -4,13 +4,14 @@ import {
   IsEmail,
   IsIn,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Length,
   Matches,
 } from 'class-validator';
 
+import { UserRoleEnum } from '../../../../common/enum/user-role.enum';
 import { TransformHelper } from '../../../../common/helper/transform-helper';
-import { UserRoleEnum } from '../../../users/enum/user-role.enum';
 import { regexConstants } from '../../constants/regex-constants';
 import { AccountTypeEnum } from '../../enums/account-type.enum';
 
@@ -55,6 +56,7 @@ export class BaseAuthReqDto {
   @IsIn([UserRoleEnum.SALESMAN, UserRoleEnum.CUSTOMER])
   role: UserRoleEnum;
 
+  @IsOptional()
   @ApiProperty({ default: AccountTypeEnum.BASE })
   public readonly account?: string;
 }

@@ -30,7 +30,7 @@ export class AuthMapper {
       userId: payload.userId,
       email: user.email,
       role: payload.role,
-      accountType: payload.accountType,
+      accountType: user.account,
     };
   }
 }

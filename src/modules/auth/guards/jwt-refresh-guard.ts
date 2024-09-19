@@ -5,12 +5,12 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 
+import { UserRoleEnum } from '../../../common/enum/user-role.enum';
 import { CustomersEntity } from '../../../database/entities/customers.entity';
 import { SellersEntity } from '../../../database/entities/sellers.entity';
 import { CustomersRepository } from '../../repository/services/customers.repository';
 import { RefreshTokensRepository } from '../../repository/services/refresh-tokens.repository';
 import { SellersRepository } from '../../repository/services/sellers.repository';
-import { UserRoleEnum } from '../../users/enum/user-role.enum';
 import { TokenType } from '../enums/token-type.enum';
 import { AuthMapper } from '../services/auth.mapper';
 import { TokenService } from '../services/token.service';

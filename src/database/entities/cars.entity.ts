@@ -11,11 +11,11 @@ import { SellersEntity } from './sellers.entity';
 export class CarsEntity extends BaseModel {
   @ManyToOne(() => BrandEntity, (entity) => entity.cars)
   @JoinColumn({ name: 'brand_id' })
-  brands?: BrandEntity;
+  brand?: BrandEntity;
 
   @ManyToOne(() => ModelEntity, (entity) => entity.cars)
   @JoinColumn({ name: 'model_id ' })
-  models?: ModelEntity;
+  model?: ModelEntity;
 
   @Column('int')
   price: number;

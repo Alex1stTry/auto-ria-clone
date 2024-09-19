@@ -42,10 +42,7 @@ export class SalesmanService {
     return await this.sellersRepo.findOneBy({ id: userData.userId });
   }
 
-  public async addCar(
-    userData: IUserData,
-    dto: CarReqDto,
-  ): Promise<CarsEntity> {
+  public async addCar(userData: IUserData, dto: CarReqDto): Promise<any> {
     return await this.carsService.addCar(userData, dto);
   }
 

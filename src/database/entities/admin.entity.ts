@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 
-import { UserRoleEnum } from '../../modules/users/enum/user-role.enum';
+import { UserRoleEnum } from '../../common/enum/user-role.enum';
 import { BaseModel } from './base-model/base-model';
 import { TableNameEnum } from './enum/table-name.enum';
 import { RefreshTokensEntity } from './refresh-tokens.entity';

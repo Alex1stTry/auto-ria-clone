@@ -7,8 +7,8 @@ import { TableNameEnum } from './enum/table-name.enum';
 @Entity(TableNameEnum.CITIES)
 export class CitiesEntity extends BaseModel {
   @Column('text')
-  city: string;
+  name: string;
 
   @OneToMany(() => CarsEntity, (entity) => entity.city)
-  cars?: CarsEntity;
+  cars?: CarsEntity[];
 }

@@ -24,8 +24,7 @@ import { ApiFile } from '../../common/decorators/api-file.decorator';
 import { CurrentUser } from '../auth/decoraors/current-user.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
 import { CarReqDto } from '../cars/dto/req/car.req.dto';
-import { CarsResDto } from '../cars/dto/res/cars.res.dto';
-import { SalesmanResDto } from './dto/res/salesman.res.dto';
+import { CarMapper } from '../cars/services/car.mapper';
 import { BasicAccountGuard } from './guard/basic-account.guard';
 import { PremiumAccountGuard } from './guard/premium-account.guard';
 import { SalesmanMapper } from './services/salesman.mapper';
@@ -40,17 +39,13 @@ export class SalesmanController {
 
   @ApiNotFoundResponse({ description: 'Not found' })
   @Get('me')
-  public async getMe(
-    @CurrentUser() userData: IUserData,
-  ): Promise<SalesmanResDto> {
+  public async getMe(@CurrentUser() userData: IUserData): Promise<any> {
     const res = await this.salesmanService.getMe(userData);
     return SalesmanMapper.toResponseDto(res);
   }
 
   @Patch('buy-premium')
-  public async buyPremium(
-    @CurrentUser() userData: IUserData,
-  ): Promise<SalesmanResDto> {
+  public async buyPremium(@CurrentUser() userData: IUserData): Promise<any> {
     const res = await this.salesmanService.buyPremium(userData);
     return SalesmanMapper.toResponseDto(res);
   }
@@ -61,9 +56,11 @@ export class SalesmanController {
   public async addCar(
     @CurrentUser() userData: IUserData,
     @Body() dto: CarReqDto,
-  ): Promise<CarsResDto> {
-    return await this.salesmanService.addCar(userData, dto);
+  ): Promise<any | any[]> {
+    const res = await this.salesmanService.addCar(userData, dto);
+    return CarMapper.toCarResDto(res);
   }
+
   @Post('add-photos')
   @UseInterceptors(FilesInterceptor('photos'))
   @ApiConsumes('multipart/form-data')

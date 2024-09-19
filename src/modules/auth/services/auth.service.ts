@@ -7,6 +7,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 
+import { UserRoleEnum } from '../../../common/enum/user-role.enum';
 import { BcryptConfig, Config } from '../../../config/config-type.';
 import { CustomersEntity } from '../../../database/entities/customers.entity';
 import { RefreshTokensEntity } from '../../../database/entities/refresh-tokens.entity';
@@ -14,7 +15,6 @@ import { SellersEntity } from '../../../database/entities/sellers.entity';
 import { CustomersRepository } from '../../repository/services/customers.repository';
 import { RefreshTokensRepository } from '../../repository/services/refresh-tokens.repository';
 import { SellersRepository } from '../../repository/services/sellers.repository';
-import { UserRoleEnum } from '../../users/enum/user-role.enum';
 import { LoginReqDto } from '../dto/req/login.req.dto';
 import { RegisterReqDto } from '../dto/req/register.req.dto';
 import { TokensResDto } from '../dto/res/tokens.res.dto';
@@ -38,7 +38,7 @@ export class AuthService {
   }
   public async register(
     dto: RegisterReqDto,
-  ): Promise<{ user: CustomersEntity | SellersEntity; tokens: TokensResDto }> {
+  ): Promise<{ user: SellersEntity | CustomersEntity; tokens: TokensResDto }> {
     await this.isEmailExist(dto.email, dto.role);
     const password = await bcrypt.hash(
       dto.password,
@@ -141,7 +141,6 @@ export class AuthService {
     const tokens = await this.tokenService.generateTokens({
       userId: user.id,
       role: dto.role,
-      accountType: user.account,
     });
 
     let refreshToken: RefreshTokensEntity;
@@ -177,9 +176,6 @@ export class AuthService {
             salesman_id: userData.userId,
           }),
           this.accessService.deleteAccess(userData.userId, userData.role),
-          this.sellersRepository.delete({
-            email: userData.email,
-          }),
         ]);
         break;
       case UserRoleEnum.CUSTOMER:
@@ -221,7 +217,6 @@ export class AuthService {
     const tokens = await this.tokenService.generateTokens({
       userId: userData.userId,
       role: userData.role,
-      accountType: userData.accountType,
     });
 
     let refreshToken: RefreshTokensEntity;

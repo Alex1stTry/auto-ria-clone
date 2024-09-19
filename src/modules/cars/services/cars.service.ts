@@ -29,13 +29,14 @@ export class CarsService {
     const city = await this.findOrCreateCity(dto.city);
 
     const brands = await this.carsRepo.getAllBrands();
-    if (brands.length === 0) {
+    const brand = brands.find((brand) => brand.name === dto.brand);
+    if (!brand) {
       await this.mailService.sendMail();
       throw new BadRequestException(
         `Unfortunately, ${dto.brand} brands are not in the database, but we are already working on it.`,
       );
     }
-    const brand = brands[0];
+
     const model = await this.carsRepo.getModelsByBrand(brand.id, dto.model);
     if (!model) {
       await this.mailService.sendMail();
@@ -44,8 +45,8 @@ export class CarsService {
       );
     }
     const car = this.carsRepo.create({
-      brands: brand,
-      models: model,
+      brand: brand,
+      model: model,
       price: dto.price,
       year: dto.year,
       body: dto.body,
@@ -57,11 +58,11 @@ export class CarsService {
   }
 
   private async findOrCreateCity(cityName: string): Promise<CitiesEntity> {
-    let city = await this.citiesRepo.findOneBy({ city: cityName });
+    let city = await this.citiesRepo.findOneBy({ name: cityName });
 
     if (!city) {
       city = await this.citiesRepo.save(
-        this.citiesRepo.create({ city: cityName }),
+        this.citiesRepo.create({ name: cityName }),
       );
     }
 

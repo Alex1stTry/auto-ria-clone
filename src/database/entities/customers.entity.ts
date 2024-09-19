@@ -15,11 +15,11 @@ export class CustomersEntity extends BaseModel {
   @Column('text')
   password: string;
 
-  @Column('text')
-  phone: string;
-
   @Column('text', { default: 'base' })
   account: string;
+
+  @Column('text')
+  phone: string;
 
   @OneToOne(() => RefreshTokensEntity, (entity) => entity.customer)
   tokens?: RefreshTokensEntity;

@@ -8,6 +8,7 @@ import { DataSource } from 'typeorm';
 import { AppModule } from './app.module';
 import { AdminConfig, AppConfig, BcryptConfig } from './config/config-type.';
 import { AdminEntity } from './database/entities/admin.entity';
+import { SeedService } from './modules/seed/seed.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +17,8 @@ async function bootstrap() {
   const appConfig = configService.get<AppConfig>('app');
   const adminConfig = configService.get<AdminConfig>('admin');
   const bcryptConfig = configService.get<BcryptConfig>('bcrypt');
+  const initCars = app.get(SeedService);
+  await initCars.seedDatabase();
 
   app.useGlobalPipes(
     new ValidationPipe({

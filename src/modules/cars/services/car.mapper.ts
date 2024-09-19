@@ -1,40 +1,25 @@
-import * as process from 'node:process';
-
 import { CarsEntity } from '../../../database/entities/cars.entity';
-import { CarsResDto } from '../dto/res/cars.res.dto';
+import { CarResDto } from '../dto/res/car.res.dto';
 
 export class CarMapper {
-  public static toResponseDto(
-    cars: CarsEntity[] | CarsEntity,
-  ): CarsResDto[] | CarsResDto {
-    if (Array.isArray(cars)) {
-      return cars.map((car) => ({
-        brands: car.brands,
-        models: car.models,
-        photos: car.photos?.length
-          ? car.photos.map(
-              (photo) => `${process.env.AWS_S3_BUCKET_URL}/${photo}`,
-            )
-          : [],
-        price: car.price,
-        year: car.year,
-        body: car.body,
-        countOfViews: car.countOfViews,
-      }));
-    } else {
-      return {
-        brands: cars.brands,
-        models: cars.models,
-        price: cars.price,
-        photos: cars.photos?.length
-          ? cars.photos.map(
-              (photo) => `${process.env.AWS_S3_BUCKET_URL}/${photo}`,
-            )
-          : [],
-        year: cars.year,
-        body: cars.body,
-        countOfViews: cars.countOfViews,
-      };
-    }
+  public static toCarsListResponseDto(data: CarsEntity[]): CarResDto[] {
+    return data.map((item) => this.toCarResDto(item));
+  }
+  public static toCarResDto(data: CarsEntity): CarResDto {
+    return {
+      id: data.id,
+      brand: data.brand.name,
+      model: data.model.name,
+      price: data.price,
+      year: data.year,
+      body: data.body,
+      photos: data.photos,
+      city: data.city.name,
+      salesman: {
+        name: data.salesman.name,
+        email: data.salesman.email,
+        phone: data.salesman.phone,
+      },
+    };
   }
 }
