@@ -24,7 +24,11 @@ import { ApiFile } from '../../common/decorators/api-file.decorator';
 import { CurrentUser } from '../auth/decoraors/current-user.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
 import { CarReqDto } from '../cars/dto/req/car.req.dto';
+import { CarStatisticResDto } from '../cars/dto/res/car-statistic.res.dto';
+import { CarResDto } from '../cars/dto/res/cur-res.dto';
 import { CarMapper } from '../cars/services/car.mapper';
+import { SalesmanPremiumResDto } from './dto/res/salesman-premium.res.dto';
+import { SalesmanResDto } from './dto/res/salesman-res.dto';
 import { BasicAccountGuard } from './guard/basic-account.guard';
 import { PremiumAccountGuard } from './guard/premium-account.guard';
 import { SalesmanMapper } from './services/salesman.mapper';
@@ -39,13 +43,17 @@ export class SalesmanController {
 
   @ApiNotFoundResponse({ description: 'Not found' })
   @Get('me')
-  public async getMe(@CurrentUser() userData: IUserData): Promise<any> {
+  public async getMe(
+    @CurrentUser() userData: IUserData,
+  ): Promise<SalesmanResDto> {
     const res = await this.salesmanService.getMe(userData);
-    return SalesmanMapper.toResponseDto(res);
+    return SalesmanMapper.toResponseDtoWithCars(res);
   }
 
   @Patch('buy-premium')
-  public async buyPremium(@CurrentUser() userData: IUserData): Promise<any> {
+  public async buyPremium(
+    @CurrentUser() userData: IUserData,
+  ): Promise<SalesmanPremiumResDto> {
     const res = await this.salesmanService.buyPremium(userData);
     return SalesmanMapper.toResponseDto(res);
   }
@@ -56,7 +64,7 @@ export class SalesmanController {
   public async addCar(
     @CurrentUser() userData: IUserData,
     @Body() dto: CarReqDto,
-  ): Promise<any | any[]> {
+  ): Promise<CarResDto> {
     const res = await this.salesmanService.addCar(userData, dto);
     return CarMapper.toCarResDto(res);
   }
@@ -76,7 +84,10 @@ export class SalesmanController {
   @ApiForbiddenResponse()
   @UseGuards(PremiumAccountGuard)
   @Get('get-statistics')
-  public async getStatistics(@CurrentUser() userData: IUserData): Promise<any> {
-    return await this.salesmanService.getStatistics(userData);
+  public async getStatistics(
+    @CurrentUser() userData: IUserData,
+  ): Promise<CarStatisticResDto> {
+    const res = await this.salesmanService.getStatistics(userData);
+    return CarMapper.toCarStatisticDto(res);
   }
 }

@@ -10,7 +10,7 @@ import {
 import { CurrentUser } from '../auth/decoraors/current-user.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
 import { CarsQueryList } from '../cars/dto/req/cars-query-list.dto';
-import { CarResDto } from '../cars/dto/res/car.res.dto';
+import { CarResDtoWithUser } from '../cars/dto/res/car-user.res.dto';
 import { CarMapper } from '../cars/services/car.mapper';
 import { CustomersMapper } from './services/customers.mapper';
 import { CustomersService } from './services/customers.service';
@@ -37,7 +37,7 @@ export class CustomersController {
   public async getCars(
     @Query() query: CarsQueryList,
     @CurrentUser() userData: IUserData,
-  ): Promise<CarResDto[]> {
+  ): Promise<CarResDtoWithUser[]> {
     const res = await this.customersService.getCars(userData, query);
     return CarMapper.toCarsListResponseDto(res);
   }
@@ -47,8 +47,8 @@ export class CustomersController {
   @Get('car/:carId')
   public async getCarById(
     @Param('carId', ParseUUIDPipe) carId: string,
-  ): Promise<CarResDto> {
+  ): Promise<CarResDtoWithUser> {
     const res = await this.customersService.getCarById(carId);
-    return CarMapper.toCarResDto(res);
+    return CarMapper.toCarResDtoWithUser(res);
   }
 }

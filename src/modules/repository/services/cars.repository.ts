@@ -38,7 +38,7 @@ export class CarsRepository extends Repository<CarsEntity> {
 
     const averagePriceInResultCity = await this.createQueryBuilder('cars')
       .leftJoin('cars.brand', 'brand')
-      .leftJoin('cars.modes', 'model')
+      .leftJoin('cars.model', 'model')
       .leftJoin('cars.city', 'city')
       .select('brand.name', 'brand')
       .addSelect('model.name', 'model')

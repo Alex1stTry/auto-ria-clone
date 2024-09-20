@@ -22,13 +22,15 @@ export class SalesmanService {
     private readonly uploadFileService: FileUploadService,
   ) {}
   public async getMe(userData: IUserData): Promise<SellersEntity> {
-    return await this.sellersRepo.findOne({
-      where: { id: userData.userId },
-      relations: ['cars', 'cars.city'],
-    });
+    return await this.sellersRepo.getAllInfo(userData);
   }
 
   public async buyPremium(userData: IUserData): Promise<SellersEntity> {
+    const seller = await this.sellersRepo.findOneBy({ id: userData.userId });
+
+    if (seller.account === AccountTypeEnum.PREMIUM) {
+      throw new BadRequestException('Your account is already premium.');
+    }
     const payResult = await this.googlePay.payProcess();
 
     if (!payResult) {
@@ -42,7 +44,10 @@ export class SalesmanService {
     return await this.sellersRepo.findOneBy({ id: userData.userId });
   }
 
-  public async addCar(userData: IUserData, dto: CarReqDto): Promise<any> {
+  public async addCar(
+    userData: IUserData,
+    dto: CarReqDto,
+  ): Promise<CarsEntity> {
     return await this.carsService.addCar(userData, dto);
   }
 

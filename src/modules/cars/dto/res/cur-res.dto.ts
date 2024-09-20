@@ -11,5 +11,4 @@ export class CarResDto extends PickType(BaseCarResDto, [
   'body',
   'photos',
   'city',
-  'salesman',
 ]) {}

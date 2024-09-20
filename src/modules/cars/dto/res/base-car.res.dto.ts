@@ -17,7 +17,7 @@ export class BaseCarResDto {
 
   city?: string;
 
-  salesman?: SalesmanResDto;
+  salesman: SalesmanResDto;
 
   countOfViews: number;
 }
