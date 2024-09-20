@@ -1,4 +1,11 @@
-import { Controller, Get, Param, ParseUUIDPipe, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  ParseUUIDPipe,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
@@ -12,12 +19,14 @@ import { IUserData } from '../auth/interfaces/user-data.interface';
 import { CarsQueryList } from '../cars/dto/req/cars-query-list.dto';
 import { CarResDtoWithUser } from '../cars/dto/res/car-user.res.dto';
 import { CarMapper } from '../cars/services/car.mapper';
+import { CustomerRoleGuard } from './guard/customer-role.guard';
 import { CustomersMapper } from './services/customers.mapper';
 import { CustomersService } from './services/customers.service';
 
 @ApiBearerAuth()
 @ApiTags('Customers')
 @Controller('customers')
+@UseGuards(CustomerRoleGuard)
 export class CustomersController {
   constructor(private readonly customersService: CustomersService) {}
 

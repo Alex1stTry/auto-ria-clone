@@ -29,11 +29,13 @@ import { CarResDto } from '../cars/dto/res/cur-res.dto';
 import { CarMapper } from '../cars/services/car.mapper';
 import { SalesmanPremiumResDto } from './dto/res/salesman-premium.res.dto';
 import { SalesmanResDto } from './dto/res/salesman-res.dto';
-import { BasicAccountGuard } from './guard/basic-account.guard';
-import { PremiumAccountGuard } from './guard/premium-account.guard';
+import { BasicAccountGuard } from './guards/basic-account.guard';
+import { PremiumAccountGuard } from './guards/premium-account.guard';
+import { SalesmanRoleGuard } from './guards/salesman-role.guard';
 import { SalesmanMapper } from './services/salesman.mapper';
 import { SalesmanService } from './services/salesman.service';
 
+@UseGuards(SalesmanRoleGuard)
 @ApiBearerAuth()
 @ApiUnauthorizedResponse({ description: 'Unauthorized' })
 @ApiTags('Salesman')
