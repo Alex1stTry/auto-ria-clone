@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, VirtualColumn } from 'typeorm';
 
 import { BaseModel } from './base-model/base-model';
 import { BrandEntity } from './brand.entity';
@@ -41,4 +41,10 @@ export class CarsEntity extends BaseModel {
 
   @Column('int', { default: 0 })
   countOfViews: number;
+
+  @VirtualColumn({ query: () => 'NULL' })
+  averagePriceUa: number;
+
+  @VirtualColumn({ query: () => 'NULL' })
+  averagePriceCity: number;
 }

@@ -1,9 +1,9 @@
-import { CarResDto } from '../../../cars/dto/res/cur-res.dto';
+import { CarResDto } from '../../../cars/dto/res/car-res.dto';
 
 export class SalesmanResDto {
   name: string;
   email: string;
   phone: string;
-  cars?: CarResDto[];
   account?: string;
+  cars?: CarResDto[];
 }

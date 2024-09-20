@@ -19,52 +19,20 @@ export class CarsRepository extends Repository<CarsEntity> {
     super(CarsEntity, dataSource.manager);
   }
 
-  public async getStatistic(salesman_id: string): Promise<any> {
-    const cars = await this.createQueryBuilder('cars')
-      .leftJoinAndSelect('cars.brand', 'brand')
-      .leftJoinAndSelect('cars.model', 'model')
-      .where('cars.salesman_id = :salesmanId', { salesmanId: salesman_id })
-      .getMany();
+  public async getStatistic(salesman_id: string): Promise<CarsEntity[]> {
+    const qb = this.createQueryBuilder('car')
+      .leftJoinAndSelect('car.brand', 'brand')
+      .leftJoinAndSelect('car.model', 'model')
+      .leftJoinAndSelect('car.city', 'city')
+      .where('car.salesman_id = :salesman_id', { salesman_id })
+      .addSelect(
+        'ROUND(AVG(car.price) OVER (PARTITION BY brand.id, model.id)) AS averagePriceUa',
+      )
+      .addSelect(
+        'ROUND(AVG(car.price) OVER (PARTITION BY city.id, brand.id, model.id)) AS averagePriceCity',
+      );
 
-    const averagePriceResultUa = await this.createQueryBuilder('cars')
-      .leftJoin('cars.brand', 'brand')
-      .leftJoin('cars.model', 'model')
-      .select('brand.name', 'brand')
-      .addSelect('model.name', 'model')
-      .addSelect('ROUND(AVG(cars.price))', 'averagePrice')
-      .groupBy('brand.name')
-      .addGroupBy('model.name')
-      .getRawMany();
-
-    const averagePriceInResultCity = await this.createQueryBuilder('cars')
-      .leftJoin('cars.brand', 'brand')
-      .leftJoin('cars.model', 'model')
-      .leftJoin('cars.city', 'city')
-      .select('brand.name', 'brand')
-      .addSelect('model.name', 'model')
-      .addSelect('city.name', 'city')
-      .groupBy('brand.name')
-      .addGroupBy('model.name')
-      .addGroupBy('city.name')
-      .getRawMany();
-
-    const averagePricesInUa = averagePriceResultUa.map((result) => ({
-      brand: result.brand,
-      model: result.model,
-      averagePrice: parseFloat(result.averagePrice),
-    }));
-
-    const averagePriceInCity = averagePriceInResultCity.map((result) => ({
-      brand: result.brand,
-      model: result.model,
-      city: result.city,
-      averagePrice: parseFloat(result.averagePrice),
-    }));
-    return {
-      cars,
-      averagePricesInUa,
-      averagePriceInCity,
-    };
+    return await qb.getRawMany();
   }
 
   public async getAllBrands(): Promise<BrandEntity[]> {

@@ -4,6 +4,8 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseUUIDPipe,
   Patch,
   Post,
   UploadedFiles,
@@ -24,11 +26,11 @@ import { ApiFile } from '../../common/decorators/api-file.decorator';
 import { CurrentUser } from '../auth/decoraors/current-user.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
 import { CarReqDto } from '../cars/dto/req/car.req.dto';
+import { CarResDto } from '../cars/dto/res/car-res.dto';
 import { CarStatisticResDto } from '../cars/dto/res/car-statistic.res.dto';
-import { CarResDto } from '../cars/dto/res/cur-res.dto';
 import { CarMapper } from '../cars/services/car.mapper';
 import { SalesmanPremiumResDto } from './dto/res/salesman-premium.res.dto';
-import { SalesmanResDto } from './dto/res/salesman-res.dto';
+import { SalesmanPrivateResDto } from './dto/res/salesman-private-res.dto';
 import { BasicAccountGuard } from './guards/basic-account.guard';
 import { PremiumAccountGuard } from './guards/premium-account.guard';
 import { SalesmanRoleGuard } from './guards/salesman-role.guard';
@@ -47,9 +49,9 @@ export class SalesmanController {
   @Get('me')
   public async getMe(
     @CurrentUser() userData: IUserData,
-  ): Promise<SalesmanResDto> {
+  ): Promise<SalesmanPrivateResDto> {
     const res = await this.salesmanService.getMe(userData);
-    return SalesmanMapper.toResponseDtoWithCars(res);
+    return SalesmanMapper.toSalesManResDto(res);
   }
 
   @Patch('buy-premium')
@@ -71,7 +73,7 @@ export class SalesmanController {
     return CarMapper.toCarResDto(res);
   }
 
-  @Post('add-photos')
+  @Patch('add-photos/:carId')
   @UseInterceptors(FilesInterceptor('photos'))
   @ApiConsumes('multipart/form-data')
   @HttpCode(HttpStatus.NO_CONTENT)
@@ -79,8 +81,9 @@ export class SalesmanController {
   public async addPhotos(
     @UploadedFiles() photos: Express.Multer.File[],
     @CurrentUser() userData: IUserData,
+    @Param('carId', ParseUUIDPipe) carId: string,
   ): Promise<void> {
-    await this.salesmanService.addPhotos(userData, photos);
+    await this.salesmanService.addPhotos(userData, photos, carId);
   }
 
   @ApiForbiddenResponse()
@@ -88,8 +91,8 @@ export class SalesmanController {
   @Get('get-statistics')
   public async getStatistics(
     @CurrentUser() userData: IUserData,
-  ): Promise<CarStatisticResDto> {
+  ): Promise<CarStatisticResDto[]> {
     const res = await this.salesmanService.getStatistics(userData);
-    return CarMapper.toCarStatisticDto(res);
+    return CarMapper.toCarStatistic(res);
   }
 }

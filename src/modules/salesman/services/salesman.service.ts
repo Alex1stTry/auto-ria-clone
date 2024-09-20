@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { CarsEntity } from '../../../database/entities/cars.entity';
 import { SellersEntity } from '../../../database/entities/sellers.entity';
@@ -51,14 +55,23 @@ export class SalesmanService {
     return await this.carsService.addCar(userData, dto);
   }
 
-  public async getStatistics(userData: IUserData): Promise<CarsEntity> {
+  public async getStatistics(userData: IUserData): Promise<CarsEntity[]> {
     return await this.carsRepo.getStatistic(userData.userId);
   }
 
   public async addPhotos(
     userData: IUserData,
     photos: Express.Multer.File[],
+    carId: string,
   ): Promise<void> {
+    const car = await this.carsRepo.findOne({
+      where: { id: carId, salesman_id: userData.userId },
+    });
+
+    if (!car) {
+      throw new NotFoundException('Car not found');
+    }
+
     const uploadedPhotoPaths: string[] = [];
     for (const photo of photos) {
       const filePath = await this.uploadFileService.uploadFile(
@@ -69,8 +82,8 @@ export class SalesmanService {
       uploadedPhotoPaths.push(filePath);
     }
     await this.carsRepo.update(
-      { salesman_id: userData.userId },
-      { photos: uploadedPhotoPaths },
+      { salesman_id: userData.userId, id: carId },
+      { photos: [...(car.photos || []), ...uploadedPhotoPaths] },
     );
   }
 }

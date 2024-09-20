@@ -12,4 +12,8 @@ export class CarStatisticResDto extends PickType(BaseCarResDto, [
   'photos',
   'city',
   'countOfViews',
-]) {}
+]) {
+  averagePriceUa: number;
+
+  averagePriceCity: number;
+}
