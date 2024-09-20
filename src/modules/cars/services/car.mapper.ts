@@ -15,7 +15,11 @@ export class CarMapper {
       price: data.price,
       year: data.year,
       body: data.body,
-      photos: data.photos,
+      photos: data.photos
+        ? data.photos.map(
+            (photo) => `${process.env.AWS_S3_BUCKET_URL}/${photo}`,
+          )
+        : [],
       city: data.city.name,
       salesman: {
         name: data.salesman?.name,
